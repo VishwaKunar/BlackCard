@@ -1,9 +1,19 @@
 steps:
+# Build Docker image
 - name: 'gcr.io/cloud-builders/docker'
-  args: ['build', '-t', 'us-central1-docker.pkg.dev/$PROJECT_ID/my-docker-repo/app:latest', '.']
+  args:
+    - 'build'
+    - '-t'
+    - 'us-central1-docker.pkg.dev/$PROJECT_ID/my-docker-repo/app:latest'
+    - '.'
 
+# Push image
 - name: 'gcr.io/cloud-builders/docker'
-  args: ['push', 'us-central1-docker.pkg.dev/$PROJECT_ID/my-docker-repo/app:latest']
+  args:
+    - 'push'
+    - 'us-central1-docker.pkg.dev/$PROJECT_ID/my-docker-repo/app:latest'
 
 images:
 - 'us-central1-docker.pkg.dev/$PROJECT_ID/my-docker-repo/app:latest'
+options:
+  logging: CLOUD_LOGGING_ONLY
