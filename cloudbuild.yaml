@@ -1,31 +1,34 @@
 steps:
-  # Step 1: Build Docker image
-  - name: 'gcr.io/cloud-builders/docker'
-    args:
-      - 'build'
-      - '-t'
-      - 'us-central1-docker.pkg.dev/$PROJECT_ID/my-repo/app:$COMMIT_SHA'
-      - '.'
 
-  # Step 2: Push image
-  - name: 'gcr.io/cloud-builders/docker'
-    args:
-      - 'push'
-      - 'us-central1-docker.pkg.dev/$PROJECT_ID/my-repo/app:$COMMIT_SHA'
+# Build Docker image
 
-  # Step 3: Deploy to VM
-  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
-    entrypoint: gcloud
-    args:
-      - 'compute'
-      - 'instances'
-      - 'update-container'
-      - 'vm001'   # ✅ YOUR VM
-      - '--zone=us-central1-a'   # ✅ YOUR ZONE
-      - '--container-image=us-central1-docker.pkg.dev/$PROJECT_ID/my-repo/app:$COMMIT_SHA'
+- name: 'gcr.io/cloud-builders/docker'
 
+  args:
+
+    - 'build'
+
+    - '-t'
+
+    - 'us-central1-docker.pkg.dev/$PROJECT_ID/my-docker-repo/app:latest'
+
+    - '.'
+ 
+# Push image
+
+- name: 'gcr.io/cloud-builders/docker'
+
+  args:
+
+    - 'push'
+
+    - 'us-central1-docker.pkg.dev/$PROJECT_ID/my-docker-repo/app:latest'
+ 
 images:
-  - 'us-central1-docker.pkg.dev/$PROJECT_ID/my-repo/app:$COMMIT_SHA'
+
+- 'us-central1-docker.pkg.dev/$PROJECT_ID/my-docker-repo/app:latest'
 
 options:
+
   logging: CLOUD_LOGGING_ONLY
+ 
