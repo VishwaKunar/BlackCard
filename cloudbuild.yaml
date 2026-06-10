@@ -1,5 +1,4 @@
 steps:
-  # ✅ Step 1: Build Docker image
   - name: 'gcr.io/cloud-builders/docker'
     args:
       - 'build'
@@ -7,13 +6,11 @@ steps:
       - 'us-central1-docker.pkg.dev/$PROJECT_ID/my-repo/app:$COMMIT_SHA'
       - '.'
 
-  # ✅ Step 2: Push image to Artifact Registry
   - name: 'gcr.io/cloud-builders/docker'
     args:
       - 'push'
       - 'us-central1-docker.pkg.dev/$PROJECT_ID/my-repo/app:$COMMIT_SHA'
 
-  # ✅ Step 3: Deploy to VM automatically (CD)
   - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
     entrypoint: gcloud
     args:
