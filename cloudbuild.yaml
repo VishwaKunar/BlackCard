@@ -34,7 +34,6 @@ steps:
       docker run -d --name app -p 80:8080 \
       us-central1-docker.pkg.dev/$PROJECT_ID/my-docker-repo/app:$SHORT_SHA
 
-# ✅ Track built image
 images:
 - 'us-central1-docker.pkg.dev/$PROJECT_ID/my-docker-repo/app:$SHORT_SHA'
 
