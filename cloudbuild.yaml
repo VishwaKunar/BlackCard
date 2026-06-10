@@ -14,29 +14,21 @@ steps:
     - 'push'
     - 'us-central1-docker.pkg.dev/$PROJECT_ID/my-docker-repo/app:$SHORT_SHA'
 
-# ✅ 3. Deploy to Compute Engine VM (CD Step)
+# ✅ 3. Deploy to VM (NO SSH → FIXED METHOD ✅)
 - name: 'gcr.io/cloud-builders/gcloud'
   args:
     - 'compute'
-    - 'ssh'
+    - 'instances'
+    - 'add-metadata'
     - 'vm001'
     - '--zone=us-central1-a'
-    - '--command'
-    - |
-      echo "Stopping old container..."
-      docker stop app || true
-      docker rm app || true
+    - '--metadata'
+    - startup-script=sudo docker stop app || true; sudo docker rm app || true; sudo docker pull us-central1-docker.pkg.dev/$PROJECT_ID/my-docker-repo/app:$SHORT_SHA; sudo docker run -d -p 80:8080 --name app us-central1-docker.pkg.dev/$PROJECT_ID/my-docker-repo/app:$SHORT_SHA
 
-      echo "Pulling new image..."
-      docker pull us-central1-docker.pkg.dev/$PROJECT_ID/my-docker-repo/app:$SHORT_SHA
-
-      echo "Running new container..."
-      docker run -d --name app -p 80:8080 \
-      us-central1-docker.pkg.dev/$PROJECT_ID/my-docker-repo/app:$SHORT_SHA
-
+# ✅ Track built image
 images:
 - 'us-central1-docker.pkg.dev/$PROJECT_ID/my-docker-repo/app:$SHORT_SHA'
 
-# ✅ Logging  option
+# ✅ Logging option
 options:
   logging: CLOUD_LOGGING_ONLY
