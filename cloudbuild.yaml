@@ -7,21 +7,21 @@ steps:
       - 'us-central1-docker.pkg.dev/$PROJECT_ID/my-repo/app:$COMMIT_SHA'
       - '.'
 
-  # Step 2: Push Docker image to Artifact Registry
+  # Step 2: Push image
   - name: 'gcr.io/cloud-builders/docker'
     args:
       - 'push'
       - 'us-central1-docker.pkg.dev/$PROJECT_ID/my-repo/app:$COMMIT_SHA'
 
-  # Step 3: Deploy to VM (FIXED ✅)
+  # Step 3: Deploy to VM
   - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
     entrypoint: gcloud
     args:
       - 'compute'
       - 'instances'
       - 'update-container'
-      - 'vm001'   # ✅ FIXED (was my-vm)
-      - '--zone=us-central1-a'
+      - 'vm001'   # ✅ YOUR VM
+      - '--zone=us-central1-a'   # ✅ YOUR ZONE
       - '--container-image=us-central1-docker.pkg.dev/$PROJECT_ID/my-repo/app:$COMMIT_SHA'
 
 images:
