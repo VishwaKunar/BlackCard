@@ -38,6 +38,6 @@ steps:
 images:
 - 'us-central1-docker.pkg.dev/$PROJECT_ID/my-docker-repo/app:$SHORT_SHA'
 
-# ✅ Logging option
+# ✅ Logging ok option
 options:
   logging: CLOUD_LOGGING_ONLY
